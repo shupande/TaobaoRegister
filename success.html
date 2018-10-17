@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<style>
+		    body {
+		        padding-top: 50px;
+		        color: #5a5a5a;
+		        font-family: 微软雅黑;
+		    }
+		    #orderSuccess {
+		        text-align: center;
+		    }
+		    
+		    #orderSuccess p {
+		        font-size: 2em;
+		        color: gray;
+		    }
+		    .mui-icon {
+		        font-size: 10em;
+		        color: green;
+		    }
+    </style>
+	</head>
+
+	<body>
+		
+		<div class="center-block" id="orderSuccess">
+            <span class="mui-icon mui-icon-checkmarkempty"></span>
+            <p>操作成功</p>
+        </div>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			document.addEventListener("DOMContentLoaded", function(){
+				setTimeout(function () {
+                	location.href="register.html"
+            	},1500);
+			}); 
+		</script>
+	</body>
+
+</html>

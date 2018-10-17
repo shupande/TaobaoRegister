@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<style type="text/css">
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 10px;
+				background-color: #efeff4;
+				
+			}
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			.datepicker{
+				margin: 10px;
+			}
+			#title{
+				text-align: center;
+				font-weight: bold;
+				margin: 20px;
+			}
+			#nameMark {
+				text-align: center;
+				margin: 20px;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+		<div id="title">
+			<span class="mui-icon mui-icon-email"></span>
+			淘宝拉新返佣登记
+		</div>
+		<form class="mui-input-group">
+			<div class="mui-input-row" >
+					<label><span class="mui-icon mui-icon-phone"></span>手机号:</label>
+					<input type="number" oninput="if(value.length>11)value=value.slice(0,11)"  id="numInput" placeholder="在此输入用户手机号">
+			</div>
+			<div class="mui-card">
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>淘宝新购</label>
+					<input name="business" value="1" type="checkbox" >
+				</div>
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>天猫新购</label>
+					<input name="business" value="2" type="checkbox">
+				</div>
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>支付宝新登</label>
+					<input name="business" value="3" type="checkbox">
+				</div>
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>支付宝实名</label>
+					<input name="business" value="4" type="checkbox">
+				</div>
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>绑卡</label>
+					<input name="business" value="5" type="checkbox">
+				</div>
+			</div>
+			<div class="datepicker">
+			
+			<h5 class="mui-content-padded"><span class="mui-icon-extra mui-icon-extra-outline"></span>注册时间：</h5>
+			<button id='dtpick' data-options='{"value":"2018-10-15 10:10","beginYear":2018,"endYear":2020}' class="btn mui-btn mui-btn-block">选择日期时间 ...</button>
+			</div>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-success" onclick="submitData()">提交</button>
+			</div>
+		</form>
+		<div id="nameMark">
+			<p>Powered by shupan</p>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.picker.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//选项选择
+			var m=moment().format("YYYY-MM-DD HH:mm");
+			mui('.mui-input-group').on('change', 'input', function() {
+			var value = this.checked?"true":"false";
+			});
+			
+			//提交表单数据
+			function submitData(){
+				var num=document.getElementById("numInput").value;
+				var business=document.forms[0].business;
+				var txt="";
+				for (i=0;i<business.length;++ i){
+					if (business[i].checked)
+					{
+					txt=txt + business[i].value + "";
+					}
+				}
+				var pickDate=document.getElementById("dtpick").innerText;
+				
+				//ajax
+				var xhr;
+				if(window.XMLHttpRequest){
+				     xhr = new XMLHttpRequest();
+				}else{
+				     xhr = new ActiveXObject('Microsoft.XMLHTTP');
+				}
+				xhr.open('POST','do.php',true);
+				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				xhr.send('phoneNumber='+num+'&business='+txt+'&pickDate='+pickDate);
+				xhr.onreadysatechange=function(){
+				     if(xhr.readySates==4&&xhr.status==200){
+				     	location.href="success.html";
+				     }else{
+				     	alert("sb");
+				     }
+				          
+				}
+				
+				
+			};
+			//时间选择
+			(function($) {
+					$.init();
+					var result = $('#dtpick')[0];
+					var btns = $('.btn');
+					btns.each(function(i, btn) {
+						btn.addEventListener('tap', function() {
+							var _self = this;
+							if(_self.picker) {
+								_self.picker.show(function (rs) {
+									result.innerText = rs.text;
+									_self.picker.dispose();
+									_self.picker = null;
+								});
+							} else {
+								var optionsJson = this.getAttribute('data-options') || '{}';
+								var options = JSON.parse(optionsJson);
+								var id = this.getAttribute('id');
+								_self.picker = new $.DtPicker(options);
+								_self.picker.show(function(rs) {
+								result.innerText = rs.text;
+								_self.picker.dispose();
+								_self.picker = null;
+								});
+							}
+							
+						}, false);
+					});
+				})(mui);
+		</script>
+	</body>
+
+</html>
